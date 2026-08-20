@@ -1,9 +1,9 @@
 # presentation
 
-Almuhib solar proposal deck, rebuilt as an editable 16:9 PowerPoint file with
-python-pptx. The source proposal is a 9:16 portrait document, so every slide is
-re-composed for a 13.333 x 7.5 in canvas while keeping the original type scale,
-palette and block order.
+Almuhib solar proposal deck, rebuilt as an editable PowerPoint file with
+python-pptx. The layout follows the reference document exactly: the reference
+page is 810 x 1440 pt, so the deck keeps its portrait 9:16 proportions at
+7.5 x 13.333 in, which is the reference at two thirds scale.
 
 ## Build
 
@@ -14,6 +14,10 @@ python build_presentation.py     # writes presentation.pptx
 
 Slide 1 (cover) is done. Remaining slides are added one at a time as
 `build_slide_N` functions in `build_presentation.py`.
+
+Every position, size, type size and letter spacing in the script is written in
+reference points and converted once through `u()` and `size()`, so the code can
+be read straight against the source page.
 
 Type is set in Arial and Arial Black, matching the source. Install those fonts
 (or let PowerPoint substitute them) to see the intended metrics.
