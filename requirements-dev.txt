@@ -1,0 +1,3 @@
+# extra packages the tools under tools/ need
+pymupdf==1.28.2
+numpy>=1.26
