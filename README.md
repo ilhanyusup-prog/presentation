@@ -1,9 +1,9 @@
 # presentation
 
 Almuhib solar proposal deck, rebuilt as an editable PowerPoint file with
-python-pptx. The layout follows the reference document exactly: the reference
-page is 810 x 1440 pt, so the deck keeps its portrait 9:16 proportions at
-7.5 x 13.333 in, which is the reference at two thirds scale.
+python-pptx. The layout follows the reference document: the reference page is
+810 x 1440 pt, so the deck keeps its portrait 9:16 proportions at 7.5 x 13.333
+in, which is the reference at two thirds scale.
 
 ## Build
 
@@ -12,16 +12,21 @@ pip install -r requirements.txt
 python build_presentation.py     # writes presentation.pptx
 ```
 
-Slide 1 (cover) is done. Remaining slides are added one at a time as
-`build_slide_N` functions in `build_presentation.py`.
+All 13 slides live as `deck/slide_NN.py` against the shared helpers in
+`deck/kit.py`. Positions, sizes, type sizes and letter spacing are written in
+reference points and converted once through `u()` and `size()`.
 
-Every position, size, type size and letter spacing in the script is written in
-reference points and converted once through `u()` and `size()`, so the code can
-be read straight against the source page.
+```bash
+python tools/reference.py 7      # dump a reference page
+python tools/check.py 7          # compare one built slide to the reference
+python tools/check.py --all
+```
 
 Type is set in Arial and Arial Black, matching the source. Install those fonts
 (or let PowerPoint substitute them) to see the intended metrics.
 
-`assets/` holds the artwork lifted from the source document: the villa render
-and the Almuhib logo. Everything else on the slide — background, text, rules,
-the progress rail and the page number — is a native, editable PowerPoint shape.
+`assets/` holds artwork lifted from the source: the cover villa render, both
+logos, and the line-art icons. Empty picture frames stay as named slots with
+live labels so a real photo can drop in later. Everything else — background,
+text, rules, cards, the progress rail and the page number — is a native
+editable PowerPoint shape.
