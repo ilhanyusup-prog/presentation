@@ -42,7 +42,17 @@ def render(number):
     pdf.unlink(missing_ok=True)
     build(output=pptx, numbers=[number])
     subprocess.run(
-        ["soffice", "--headless", "--convert-to", "pdf", str(pptx), "--outdir", str(OUT)],
+        [
+            "soffice",
+            # a private profile per slide, so several checks can run at once
+            f"-env:UserInstallation=file:///tmp/check/soffice_{number:02d}",
+            "--headless",
+            "--convert-to",
+            "pdf",
+            str(pptx),
+            "--outdir",
+            str(OUT),
+        ],
         check=True,
         capture_output=True,
     )
