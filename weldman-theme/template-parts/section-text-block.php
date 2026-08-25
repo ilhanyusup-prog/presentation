@@ -1,17 +1,21 @@
 <?php
 /**
- * "Text block with image" section — reusable layout used for Missioon,
- * Innovatsioon and Kvaliteet on the front page (and any page built with the
- * flexible "Sections" page template).
+ * Fixed text/image section used for Mission, Innovation and Quality.
+ * The front-page template passes the field prefix in $args['prefix'].
  *
  * @package Weldman
  */
 
-$title    = get_sub_field( 'block_title' );
-$text     = get_sub_field( 'block_text' );
-$image    = get_sub_field( 'block_image' );
-$position = get_sub_field( 'image_position' );
+$prefix   = ! empty( $args['prefix'] ) ? sanitize_key( $args['prefix'] ) : '';
+$title    = $prefix ? weldman_field( $prefix . '_title' ) : '';
+$text     = $prefix ? weldman_field( $prefix . '_text' ) : '';
+$image    = $prefix ? weldman_field( $prefix . '_image' ) : null;
+$position = $prefix ? weldman_field( $prefix . '_image_position' ) : '';
 $position = $position ? $position : 'right';
+
+if ( ! $title && ! $text && ! $image ) {
+	return;
+}
 ?>
 <section class="section section-text-block section-text-block--image-<?php echo esc_attr( $position ); ?>">
 	<div class="container section-text-block__inner">

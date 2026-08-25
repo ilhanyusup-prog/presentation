@@ -21,16 +21,72 @@ function weldman_field( $selector, $post_id = false ) {
 }
 
 /**
- * Safe wrapper around ACF's get_field() for the "Site Options" options page.
+ * Read a site-wide value stored by WordPress Customizer.
  *
- * @param string $selector Field name/key.
+ * @param string $selector Setting name without the weldman_ prefix.
+ * @param mixed  $default  Default value.
  * @return mixed
  */
-function weldman_option( $selector ) {
-	if ( ! function_exists( 'get_field' ) ) {
-		return null;
+function weldman_site_setting( $selector, $default = '' ) {
+	return get_theme_mod( 'weldman_' . $selector, $default );
+}
+
+/**
+ * Return the configured phone numbers as a compact array.
+ *
+ * @return array
+ */
+function weldman_phone_numbers() {
+	return array_values(
+		array_filter(
+			array(
+				weldman_site_setting( 'phone_1' ),
+				weldman_site_setting( 'phone_2' ),
+			)
+		)
+	);
+}
+
+/**
+ * Return configured social links in the format expected by templates/schema.
+ *
+ * @return array
+ */
+function weldman_social_links() {
+	$links = array();
+
+	foreach ( array( 'facebook', 'instagram', 'tiktok', 'youtube', 'linkedin', 'whatsapp' ) as $platform ) {
+		$url = weldman_site_setting( 'social_' . $platform );
+		if ( $url ) {
+			$links[] = array(
+				'platform' => $platform,
+				'url'      => $url,
+			);
+		}
 	}
-	return get_field( $selector, 'option' );
+
+	return $links;
+}
+
+/**
+ * Return up to six fixed partner logo/link slots from the current page.
+ *
+ * @return array
+ */
+function weldman_partner_slots() {
+	$partners = array();
+
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$logo = weldman_field( 'partner_' . $i . '_logo' );
+		if ( $logo ) {
+			$partners[] = array(
+				'logo' => $logo,
+				'link' => weldman_field( 'partner_' . $i . '_link' ),
+			);
+		}
+	}
+
+	return $partners;
 }
 
 /**
@@ -159,53 +215,6 @@ function weldman_primary_nav() {
 			)
 		);
 		echo '</ul>';
-	}
-}
-
-/**
- * Loop over the "page_sections" Flexible Content field (front page or the
- * generic "Flexible sections" page template) and render the matching
- * template-parts/section-*.php for each layout.
- *
- * @param int|false $post_id Post ID, or false for current post.
- */
-function weldman_render_page_sections( $post_id = false ) {
-	if ( ! function_exists( 'have_rows' ) ) {
-		return;
-	}
-
-	if ( ! have_rows( 'page_sections', $post_id ) ) {
-		return;
-	}
-
-	while ( have_rows( 'page_sections', $post_id ) ) {
-		the_row();
-
-		$layout = get_row_layout();
-
-		switch ( $layout ) {
-			case 'hero':
-				get_template_part( 'template-parts/section-hero' );
-				break;
-			case 'text_block':
-				get_template_part( 'template-parts/section-text-block' );
-				break;
-			case 'partners':
-				get_template_part( 'template-parts/section-partners' );
-				break;
-			case 'contact_form':
-				get_template_part( 'template-parts/section-contact-form' );
-				break;
-			default:
-				/**
-				 * Fires when an unknown flexible-content layout is encountered,
-				 * so custom layouts added later can hook in without editing core files.
-				 *
-				 * @param string $layout Layout name.
-				 */
-				do_action( 'weldman_render_unknown_section', $layout );
-				break;
-		}
 	}
 }
 

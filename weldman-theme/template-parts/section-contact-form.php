@@ -1,12 +1,11 @@
 <?php
 /**
- * Contact form section ("Kirjuta meile!") used on the front page and on any
- * flexible-sections page.
+ * Fixed homepage contact form section ("Kirjuta meile!").
  *
  * @package Weldman
  */
 
-$title = get_sub_field( 'form_title' );
+$title = weldman_field( 'form_title' );
 $title = $title ? $title : __( 'Kirjuta meile!', 'weldman' );
 ?>
 <section class="section section-contact-form" id="contact">
@@ -18,7 +17,7 @@ $title = $title ? $title : __( 'Kirjuta meile!', 'weldman' );
 		</div>
 
 		<?php
-		$socials = weldman_option( 'social_links' );
+		$socials = weldman_social_links();
 		if ( ! empty( $socials ) && is_array( $socials ) ) :
 			?>
 			<ul class="social-links social-links--centered">

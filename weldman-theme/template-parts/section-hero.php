@@ -1,7 +1,6 @@
 <?php
 /**
- * Hero section — used as the first flexible-content layout on the front
- * page and, optionally, on other flexible-sections pages.
+ * Fixed homepage hero section.
  *
  * Renders the single <h1> for the page, a short subtitle, a side image and
  * (when filled in) a pull-quote with author underneath.
@@ -9,11 +8,11 @@
  * @package Weldman
  */
 
-$title         = get_sub_field( 'hero_title' );
-$subtitle      = get_sub_field( 'hero_subtitle' );
-$quote_text    = get_sub_field( 'hero_quote_text' );
-$quote_author  = get_sub_field( 'hero_quote_author' );
-$image         = get_sub_field( 'hero_image' );
+$title        = weldman_field( 'hero_title' );
+$subtitle     = weldman_field( 'hero_subtitle' );
+$quote_text   = weldman_field( 'hero_quote_text' );
+$quote_author = weldman_field( 'hero_quote_author' );
+$image        = weldman_field( 'hero_image' );
 ?>
 <section class="section section-hero">
 	<div class="container section-hero__inner">

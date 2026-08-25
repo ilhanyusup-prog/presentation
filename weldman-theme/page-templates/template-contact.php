@@ -4,7 +4,7 @@
  * Template Post Type: page
  *
  * Used for the "Kontakt" page (/contact/): intro text, contact details
- * (pulled from the Site Options page so they stay in sync with the
+ * (pulled from WordPress Customizer so they stay in sync with the
  * footer), an optional map embed, and the contact form.
  *
  * @package Weldman
@@ -12,9 +12,9 @@
 
 get_header();
 
-$address = weldman_option( 'company_address' );
-$phones  = weldman_option( 'phone_numbers' );
-$email   = weldman_option( 'email' );
+$address = weldman_site_setting( 'company_address', 'Lennujaama tee 7, 11101 Tallinn' );
+$phones  = weldman_phone_numbers();
+$email   = weldman_site_setting( 'email', 'info@weldman.ee' );
 ?>
 
 <?php while ( have_posts() ) : the_post(); ?>
@@ -46,13 +46,12 @@ $email   = weldman_option( 'email' );
 							</li>
 						<?php endif; ?>
 
-						<?php if ( ! empty( $phones ) && is_array( $phones ) ) : ?>
+						<?php if ( ! empty( $phones ) ) : ?>
 							<li>
 								<span class="contact-page__label"><?php esc_html_e( 'Phone', 'weldman' ); ?></span>
-								<?php foreach ( $phones as $row ) : ?>
-									<?php if ( empty( $row['phone'] ) ) { continue; } ?>
-									<a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $row['phone'] ) ); ?>">
-										<?php echo esc_html( $row['phone'] ); ?>
+								<?php foreach ( $phones as $phone ) : ?>
+									<a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $phone ) ); ?>">
+										<?php echo esc_html( $phone ); ?>
 									</a><br />
 								<?php endforeach; ?>
 							</li>

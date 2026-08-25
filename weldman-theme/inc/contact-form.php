@@ -3,8 +3,8 @@
  * Contact form handling.
  *
  * Per the project brief, one lightweight form plugin is allowed. The theme
- * is built to work with Contact Form 7 (shortcode dropped into the ACF
- * "Contact form" layout / Options Page), but ships a tiny native fallback
+ * is built to work with Contact Form 7 (shortcode entered in the fixed ACF
+ * contact-form field), but ships a tiny native fallback
  * using wp_mail() so the "Kirjuta meile!" section still works out of the
  * box on a fresh install before any plugin is activated.
  *
@@ -110,7 +110,7 @@ function weldman_handle_contact_form() {
 		exit;
 	}
 
-	$to      = weldman_option( 'email' ) ? weldman_option( 'email' ) : get_option( 'admin_email' );
+	$to      = weldman_site_setting( 'email', get_option( 'admin_email' ) );
 	$subject = sprintf( /* translators: %s: site name. */ __( 'New contact form message — %s', 'weldman' ), get_bloginfo( 'name' ) );
 	$body    = sprintf(
 		"%s: %s\n%s: %s\n\n%s:\n%s",

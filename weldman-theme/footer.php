@@ -5,10 +5,10 @@
  * @package Weldman
  */
 
-$address = weldman_option( 'company_address' );
-$phones  = weldman_option( 'phone_numbers' );
-$email   = weldman_option( 'email' );
-$socials = weldman_option( 'social_links' );
+$address = weldman_site_setting( 'company_address', 'Lennujaama tee 7, 11101 Tallinn' );
+$phones  = weldman_phone_numbers();
+$email   = weldman_site_setting( 'email', 'info@weldman.ee' );
+$socials = weldman_social_links();
 ?>
 
 	</main><!-- #content -->
@@ -29,13 +29,12 @@ $socials = weldman_option( 'social_links' );
 				</address>
 			<?php endif; ?>
 
-			<?php if ( ! empty( $phones ) && is_array( $phones ) ) : ?>
+			<?php if ( ! empty( $phones ) ) : ?>
 				<ul class="site-footer__phones">
-					<?php foreach ( $phones as $row ) : ?>
-						<?php if ( empty( $row['phone'] ) ) { continue; } ?>
+					<?php foreach ( $phones as $phone ) : ?>
 						<li>
-							<a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $row['phone'] ) ); ?>">
-								<?php echo esc_html( $row['phone'] ); ?>
+							<a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $phone ) ); ?>">
+								<?php echo esc_html( $phone ); ?>
 							</a>
 						</li>
 					<?php endforeach; ?>

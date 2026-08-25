@@ -1,154 +1,137 @@
 # Weldman WordPress Theme
 
-Lightweight, custom classic (non-block/non-FSE) WordPress theme for
-[weldman.ee](https://weldman.ee) — a welding training center in Tallinn,
-Estonia. Built to replace the current Elementor-based site with clean,
-version-controlled code while keeping content editing simple through the
-standard WordPress admin (Pages + ACF fields), no page builder involved.
+Lightweight classic WordPress theme for [weldman.ee](https://weldman.ee).
+It replaces Elementor with clean PHP templates and fields editable through
+the standard WordPress admin.
 
-## Stack
+## Free plugin stack
 
-- **Theme:** custom classic PHP theme (based on the `_s` / underscores
-  structure), no build step required — plain CSS/JS.
-- **Flexible content:** [Advanced Custom Fields](https://www.advancedcustomfields.com/)
-  (free or Pro). Pro is needed for the Flexible Content field used on the
-  homepage/`template-sections.php`.
-- **Multilingual:** [Polylang](https://polylang.pro/) (ET / RU / EN).
-- **Contact form:** built-in lightweight form (name/email/message via
-  `wp_mail()`, with a honeypot + timing check for spam) or, optionally,
-  [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) — paste a
-  CF7 shortcode into the "Contact Form 7 shortcode" field on the relevant
-  section/page and it takes over automatically.
-- **SEO:** handled manually by the theme at first (title tag, meta
-  description, semantic HTML, `LocalBusiness` JSON-LD in the footer). Only
-  once the site is live and stable, install Yoast SEO or Rank Math on top —
-  see "Order of work" below.
+- **Advanced Custom Fields Free** — required. The theme uses only free field
+  types: Text, Textarea, WYSIWYG, Image, URL, Select and Tab.
+- **Polylang Free** — required for ET / RU / EN.
+- **Contact Form 7 Free** — optional. A native `wp_mail()` form is included.
+- **Yoast SEO Free or Rank Math Free** — optional and intended to be installed
+  only after the site is stable.
 
-## Required plugins
+No ACF Pro features are used. In particular, the theme has no Flexible
+Content, Repeater, Group or Options Page fields.
 
-| Plugin | Required | Notes |
-|---|---|---|
-| Advanced Custom Fields (free or Pro) | **Yes** | Pro needed for the homepage Flexible Content field. |
-| Polylang | Yes, for multilingual (ET/RU/EN) | Free version is sufficient. |
-| Contact Form 7 | Optional | Only if you don't want the built-in native form. |
-| Yoast SEO / Rank Math | Optional, install **last** | See step 13 below. |
+## Content model
 
-The theme fails gracefully (no fatal errors) if ACF is missing, and shows an
-admin notice prompting you to install it.
+### Homepage
+
+The static front page receives one ACF Free field group named **Homepage
+sections**. Its tabs organize fixed fields for:
+
+1. Hero
+2. Mission
+3. Innovation
+4. Quality
+5. Partners
+6. Contact form
+
+`front-page.php` renders those sections in that fixed order. Mission,
+Innovation and Quality share `template-parts/section-text-block.php`, with
+separate prefixed fields such as `mission_title`, `innovation_title` and
+`quality_title`.
+
+Partners use six fixed slots:
+
+- `partner_1_logo` / `partner_1_link`
+- …
+- `partner_6_logo` / `partner_6_link`
+
+Empty partner slots are simply omitted.
+
+### Site-wide contact and social data
+
+ACF Free has no Options Page. Site-wide values therefore use WordPress core
+Customizer settings under **Appearance → Customize → Weldman Contact &
+Social**:
+
+- Company address
+- Phone 1 and Phone 2
+- Email
+- Facebook, Instagram, TikTok, YouTube, LinkedIn and WhatsApp URLs
+
+These settings feed the footer, Kontakt page, contact form recipient and
+`LocalBusiness` JSON-LD schema.
+
+### Kontakt and SEO
+
+- The **Contact page** template has ACF Free fields for intro text, optional
+  map URL, form title and optional Contact Form 7 shortcode.
+- Posts and pages receive a free `meta_description` textarea. If empty, the
+  theme falls back to the excerpt/content.
 
 ## Folder structure
 
-```
+```text
 weldman-theme/
-├── style.css                    # Theme header (see assets/css for real styles)
-├── functions.php                # Enqueues, menus, thumbnails, cleanup, ACF options page
+├── style.css
+├── functions.php
 ├── header.php / footer.php
-├── comments.php / searchform.php / 404.php / search.php
-├── index.php / page.php / front-page.php
-├── archive.php / single.php
+├── front-page.php / page.php
+├── archive.php / single.php / index.php / search.php
+├── 404.php / comments.php / searchform.php
 ├── page-templates/
-│   ├── template-sections.php    # Reusable "Flexible sections" page (e.g. Innovatsioon)
-│   └── template-contact.php     # Kontakt page (intro, address/phone/email, map, form)
+│   ├── template-sections.php    # Standard content page, e.g. Innovatsioon
+│   └── template-contact.php
 ├── inc/
-│   ├── acf-fields.php           # ACF field group registration (code-based, versioned)
-│   ├── customizer.php           # Brand color theme_mod's
-│   ├── seo.php                  # Meta description + LocalBusiness JSON-LD
-│   ├── contact-form.php         # Native contact form handler + CF7 passthrough
-│   └── template-functions.php   # weldman_field(), weldman_option(), weldman_image(), ...
+│   ├── acf-fields.php           # ACF Free fields only
+│   ├── customizer.php           # Brand, contacts, phones and social URLs
+│   ├── contact-form.php
+│   ├── seo.php
+│   └── template-functions.php
 ├── template-parts/
 │   ├── section-hero.php
-│   ├── section-text-block.php   # Reusable: Missioon / Innovatsioon / Kvaliteet
+│   ├── section-text-block.php
 │   ├── section-partners.php
 │   ├── section-contact-form.php
 │   └── content-post.php
-├── assets/
-│   ├── css/ (reset.css, style.css, components.css, responsive.css)
-│   ├── js/main.js                # Mobile menu toggle, no dependencies
-│   └── images/
-└── acf-json/                    # Auto-sync target for ACF UI edits (see acf-json/README.md)
+├── assets/css/ and assets/js/
+└── acf-json/
 ```
 
-### A note on `template-parts/section-*.php` vs. the brief
+Field groups are registered in PHP with
+`acf_add_local_field_group()`, so a fresh environment needs no manual import.
+The `acf-json/` directory remains configured for versioning edits made in the
+ACF admin UI.
 
-The ACF "Text block with image" layout is explicitly reusable across
-Missioon / Innovatsioon / Kvaliteet (same fields: title, text, image, image
-position). Rather than duplicating near-identical markup into three files
-(`section-mission.php`, `section-innovation.php`, `section-quality.php`),
-the theme implements **one** partial, `template-parts/section-text-block.php`,
-rendered once per Flexible Content row. This keeps the three homepage blocks
-byte-for-byte consistent and easier to restyle later. If distinct markup per
-block is ever needed, split this file — the ACF field names stay the same.
-
-## ACF field groups (registered in `inc/acf-fields.php`)
-
-1. **Page sections** (`page_sections`, Flexible Content) — attached to the
-   site's Front Page and to any page using the *Flexible sections* page
-   template. Layouts: `Hero`, `Text block with image`, `Partners / Logos`,
-   `Contact form`.
-2. **Contacts & Social** (ACF Options Page, *Site Options* in the admin
-   menu) — `company_address`, `phone_numbers` (repeater), `email`,
-   `social_links` (repeater: platform + URL). Used by the footer, the
-   Kontakt page, and the JSON-LD schema.
-3. **Contact page** — attached to the *Contact page* page template:
-   `contact_intro` (WYSIWYG), `contact_map_embed` (Google Maps embed URL),
-   `contact_form_title`, `cf7_shortcode`.
-4. **SEO** — `meta_description` on Posts and Pages (sidebar meta box).
-
-Fields are registered in PHP (`acf_add_local_field_group`) so they're
-correct and versioned from the first deploy with zero manual export step.
-If an editor later tweaks a group from **wp-admin → Custom Fields**, ACF
-will write the change into `acf-json/` automatically (already wired up via
-`acf/settings/save_json` in `functions.php`) — commit that file and it will
-take precedence over the PHP-registered version on the next deploy.
-
-## Pages to create after activating the theme
+## Page setup
 
 | Page | Template | Notes |
 |---|---|---|
-| Avaleht (home) | *Default template* | Set as the static front page in **Settings → Reading**. Add "Page sections" rows: Hero, Text block ×3 (Missioon/Innovatsioon/Kvaliteet), Partners/Logos, Contact form. |
-| Innovatsioon | *Flexible sections* | Slug `/ecosystem/` to keep the current URL. |
-| Kontakt | *Contact page* | Slug `/contact/`. |
-| Õppimine | — | Not a real page — add a **Custom Link** menu item pointing to the external `wkk.ee` URL. |
-| Blog | — | Set as the "Posts page" in **Settings → Reading**, or link to `/blog/`. |
+| Avaleht | Default | Set as static front page in **Settings → Reading**, then fill the fixed Homepage sections fields. |
+| Innovatsioon | Content page | Keep slug `/ecosystem/`; edit with the standard WordPress editor and featured image. |
+| Kontakt | Contact page | Keep slug `/contact/`. |
+| Õppimine | Custom menu link | Link directly to `wkk.ee`; no local page needed. |
+| Blog | Posts page | Set in **Settings → Reading**. |
 
-Register the **Primary Menu** location (Appearance → Menus) with: Avaleht,
-Innovatsioon, Õppimine (custom link to wkk.ee), Kontakt, Blog. The language
-switcher (ET/RU/EN) appears automatically at the end of the primary
-navigation once Polylang is configured.
+Assign Avaleht, Innovatsioon, Õppimine, Kontakt and Blog to the Primary Menu.
+The ET/RU/EN switcher appears automatically after Polylang is configured.
 
-## Performance & SEO notes
+## Installation and migration
 
-- Emoji scripts/styles, oEmbed discovery links, RSD/WLW/generator meta tags
-  and the unused block-library CSS are all stripped in `functions.php`.
-- Google Fonts are preloaded with `preconnect` + `font-display: swap` and
-  never block rendering.
-- All content images use `wp_get_attachment_image()` / `the_post_thumbnail()`
-  (automatic `srcset`/`sizes`) and `loading="lazy"`, except the hero image
-  which is eager-loaded since it's the page's LCP element.
-- A `LocalBusiness` JSON-LD block is printed in the footer using the Site
-  Options data (address/phone/email/social links).
-- No SEO plugin is required to ship the site; `inc/seo.php` provides a
-  manual `<meta name="description">` and delegates the `<title>` tag to
-  core's `add_theme_support( 'title-tag' )`.
-- Recommend a caching plugin (WP Super Cache, W3 Total Cache, or WP Rocket)
-  separately — this is intentionally not the theme's responsibility.
+0. Before migration, export the existing site through **Tools → Export** and
+   separately download `/wp-content/uploads/`. Keep both backups outside the
+   working environment.
+1. Install and activate this theme.
+2. Install **Advanced Custom Fields Free** and **Polylang Free**.
+3. Create/assign the pages and menu listed above.
+4. Fill contacts and social links in **Appearance → Customize → Weldman
+   Contact & Social**.
+5. Fill the fixed homepage fields and Kontakt fields; restore text and media
+   from the backup.
+6. Configure and translate content with Polylang.
+7. Test responsive layouts and Lighthouse/PageSpeed.
+8. Optionally install a free SEO and caching plugin after the site is stable.
 
-## Suggested order of work
+## Performance and SEO
 
-0. **Before touching anything:** export the current site content via
-   **Tools → Export** (WXR file) and separately download the entire
-   `/wp-content/uploads/` folder. Store both outside of the working
-   environment.
-1. Install this theme and activate it.
-2. Install & activate ACF (Pro if you need the Flexible Content layouts) and
-   Polylang.
-3. Create the pages listed above, assign templates, set the front page in
-   Settings → Reading, and build the Primary Menu.
-4. Fill in **Site Options** (address, phone numbers, email, social links).
-5. Add the homepage's Flexible Content sections and the Kontakt page fields;
-   re-import text/images from the WXR backup as needed.
-6. Configure Polylang and duplicate content into ET/RU/EN.
-7. Run Lighthouse/PageSpeed Insights and test on real devices; adjust
-   `assets/css/responsive.css` as needed.
-8. Only **after** the site is stable, install Yoast SEO or Rank Math and
-   configure the XML sitemap on top of the finished theme.
+- Emoji, oEmbed discovery and unused block-library assets are removed.
+- Images use WordPress attachment rendering with `srcset`/`sizes`; non-hero
+  images are lazy-loaded.
+- Google Fonts load non-blocking with `font-display: swap`.
+- WordPress manages document titles and canonical URLs.
+- The theme emits a manual meta description and `LocalBusiness` JSON-LD.

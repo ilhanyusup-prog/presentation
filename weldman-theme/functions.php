@@ -228,27 +228,6 @@ function weldman_script_defer( $tag, $handle ) {
 add_filter( 'script_loader_tag', 'weldman_script_defer', 10, 2 );
 
 /**
- * Register ACF Options Page ("Site Options" — contacts, socials, phones, address, footer).
- */
-function weldman_acf_options_page() {
-	if ( ! function_exists( 'acf_add_options_page' ) ) {
-		return;
-	}
-
-	acf_add_options_page(
-		array(
-			'page_title' => __( 'Site Options', 'weldman' ),
-			'menu_title' => __( 'Site Options', 'weldman' ),
-			'menu_slug'  => 'weldman-options',
-			'capability' => 'edit_theme_options',
-			'icon_url'   => 'dashicons-admin-generic',
-			'redirect'   => false,
-		)
-	);
-}
-add_action( 'acf/init', 'weldman_acf_options_page' );
-
-/**
  * Tell ACF where to look for / save local JSON field group exports.
  *
  * @param array $paths Existing save paths.
@@ -287,12 +266,12 @@ add_filter( 'excerpt_more', 'weldman_excerpt_more' );
 
 /**
  * Show an admin notice if ACF is not installed/active, since the theme relies on it
- * for the homepage sections, contact page fields and site options.
+ * for homepage, contact page and SEO fields.
  */
 function weldman_acf_missing_notice() {
 	if ( ! class_exists( 'ACF' ) && current_user_can( 'activate_plugins' ) ) {
 		echo '<div class="notice notice-warning"><p>' .
-			esc_html__( 'The Weldman theme requires the Advanced Custom Fields (ACF) plugin (free or Pro) to manage homepage sections, the contact page and site-wide options. Please install and activate it.', 'weldman' ) .
+			esc_html__( 'The Weldman theme requires the free Advanced Custom Fields (ACF) plugin to manage homepage, contact page and SEO fields. Please install and activate ACF Free.', 'weldman' ) .
 			'</p></div>';
 	}
 }

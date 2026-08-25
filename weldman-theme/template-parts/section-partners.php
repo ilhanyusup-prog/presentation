@@ -5,8 +5,8 @@
  * @package Weldman
  */
 
-$title    = get_sub_field( 'partners_title' );
-$partners = get_sub_field( 'partners' );
+$title    = weldman_field( 'partners_title' );
+$partners = weldman_partner_slots();
 
 if ( empty( $partners ) ) {
 	return;

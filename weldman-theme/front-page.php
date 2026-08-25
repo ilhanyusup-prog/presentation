@@ -2,8 +2,8 @@
 /**
  * The front page template.
  *
- * Renders the "page_sections" ACF Flexible Content field (Hero, Text block
- * with image x3 for Missioon/Innovatsioon/Kvaliteet, Partners, Contact form).
+ * Renders fixed ACF Free fields in a fixed order:
+ * Hero, Mission, Innovation, Quality, Partners, Contact form.
  *
  * @package Weldman
  */
@@ -14,8 +14,13 @@ get_header();
 <?php if ( have_posts() ) : ?>
 	<?php while ( have_posts() ) : the_post(); ?>
 
-		<?php if ( function_exists( 'have_rows' ) && have_rows( 'page_sections' ) ) : ?>
-			<?php weldman_render_page_sections(); ?>
+		<?php if ( weldman_field( 'hero_title' ) ) : ?>
+			<?php get_template_part( 'template-parts/section-hero' ); ?>
+			<?php get_template_part( 'template-parts/section-text-block', null, array( 'prefix' => 'mission' ) ); ?>
+			<?php get_template_part( 'template-parts/section-text-block', null, array( 'prefix' => 'innovation' ) ); ?>
+			<?php get_template_part( 'template-parts/section-text-block', null, array( 'prefix' => 'quality' ) ); ?>
+			<?php get_template_part( 'template-parts/section-partners' ); ?>
+			<?php get_template_part( 'template-parts/section-contact-form' ); ?>
 		<?php else : ?>
 			<section class="section container">
 				<header class="page-header">

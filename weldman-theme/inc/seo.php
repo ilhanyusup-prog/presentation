@@ -57,14 +57,14 @@ add_action( 'wp_head', 'weldman_meta_description', 1 );
 
 /**
  * Organization / LocalBusiness JSON-LD structured data, output in the footer.
- * Pulls address / phones / email / social links from the ACF Options Page so
+ * Pulls address / phones / email / social links from WordPress Customizer so
  * editors only maintain this data in one place.
  */
 function weldman_schema_jsonld() {
-	$address = weldman_option( 'company_address' );
-	$email   = weldman_option( 'email' );
-	$phones  = weldman_option( 'phone_numbers' );
-	$socials = weldman_option( 'social_links' );
+	$address = weldman_site_setting( 'company_address', 'Lennujaama tee 7, 11101 Tallinn' );
+	$email   = weldman_site_setting( 'email', 'info@weldman.ee' );
+	$phones  = weldman_phone_numbers();
+	$socials = weldman_social_links();
 
 	$same_as = array();
 	if ( is_array( $socials ) ) {
@@ -76,12 +76,8 @@ function weldman_schema_jsonld() {
 	}
 
 	$telephone = '';
-	if ( is_array( $phones ) && ! empty( $phones ) ) {
-		$first = $phones[0];
-		$telephone = is_array( $first ) ? ( $first['phone'] ?? '' ) : $first;
-	} elseif ( is_string( $phones ) && $phones ) {
-		$lines     = preg_split( '/[\r\n,]+/', $phones );
-		$telephone = trim( $lines[0] );
+	if ( ! empty( $phones ) ) {
+		$telephone = $phones[0];
 	}
 
 	$schema = array(
