@@ -1,0 +1,247 @@
+/*
+ * Weldman — base styles: design tokens, typography, layout primitives.
+ * Mobile-first; breakpoints layered in assets/css/responsive.css.
+ */
+
+:root {
+	/* Brand */
+	--color-primary: #1a1450;
+	--color-primary-dark: #100b33;
+	--color-accent: #7a1fa2;
+	--color-accent-light: #a94fd1;
+
+	/* Neutrals */
+	--color-text: #1c1c22;
+	--color-text-muted: #5c5c68;
+	--color-bg: #ffffff;
+	--color-bg-alt: #f5f5f8;
+	--color-border: #e3e3ea;
+	--color-white: #ffffff;
+
+	/* Typography */
+	--font-heading: 'Rajdhani', 'Inter', system-ui, sans-serif;
+	--font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+	/* Layout */
+	--container-width: 1180px;
+	--gutter: 20px;
+	--radius: 10px;
+	--radius-lg: 20px;
+
+	/* Motion */
+	--transition: 180ms ease;
+}
+
+html {
+	font-size: 100%;
+}
+
+body {
+	font-family: var(--font-body);
+	font-size: 16px;
+	color: var(--color-text);
+	background: var(--color-bg);
+	overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+	font-family: var(--font-heading);
+	font-weight: 700;
+	line-height: 1.1;
+	color: var(--color-primary);
+	letter-spacing: 0.01em;
+}
+
+h1 {
+	font-size: clamp(2.2rem, 6vw, 3.6rem);
+	text-transform: uppercase;
+}
+
+h2 {
+	font-size: clamp(1.7rem, 4vw, 2.4rem);
+}
+
+h3 {
+	font-size: 1.3rem;
+}
+
+p {
+	color: var(--color-text);
+}
+
+a {
+	transition: color var(--transition);
+}
+
+a:hover,
+a:focus {
+	color: var(--color-accent);
+}
+
+::selection {
+	background: var(--color-accent-light);
+	color: var(--color-white);
+}
+
+/* Layout helpers */
+.container {
+	width: 100%;
+	max-width: var(--container-width);
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+.section {
+	padding-block: 56px;
+}
+
+.section + .section {
+	border-top: 1px solid var(--color-border);
+}
+
+.section--alt {
+	background: var(--color-bg-alt);
+}
+
+/* Buttons */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 14px 28px;
+	border-radius: var(--radius);
+	font-weight: 600;
+	font-size: 0.95rem;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	transition: background var(--transition), color var(--transition), transform var(--transition);
+	cursor: pointer;
+}
+
+.btn-primary {
+	background: var(--color-primary);
+	color: var(--color-white);
+	border: 1px solid var(--color-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+	background: var(--color-accent);
+	border-color: var(--color-accent);
+	color: var(--color-white);
+	transform: translateY(-1px);
+}
+
+/* Accessibility helpers */
+.screen-reader-text {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute !important;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+.skip-link {
+	position: absolute;
+	top: -100px;
+	left: 0;
+	z-index: 10000;
+	background: var(--color-primary);
+	color: var(--color-white);
+	padding: 12px 20px;
+	transition: top var(--transition);
+}
+
+.skip-link:focus {
+	top: 0;
+}
+
+/* Forms */
+input,
+textarea,
+select {
+	width: 100%;
+	padding: 14px 16px;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius);
+	background: var(--color-white);
+	font-size: 1rem;
+	transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+	outline: none;
+	border-color: var(--color-accent);
+	box-shadow: 0 0 0 3px rgba(122, 31, 162, 0.15);
+}
+
+.form-honeypot {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+}
+
+.form-row + .form-row {
+	margin-top: 14px;
+}
+
+.form-notice {
+	padding: 12px 16px;
+	border-radius: var(--radius);
+	margin-bottom: 16px;
+	font-size: 0.95rem;
+}
+
+.form-notice--success {
+	background: #e6f6ec;
+	color: #1e6b3a;
+}
+
+.form-notice--error {
+	background: #fdecec;
+	color: #9c1c1c;
+}
+
+/* WYSIWYG content typography (block_text, contact_intro, the_content) */
+.entry-content,
+.section-text-block__text,
+.contact-page__info {
+	color: var(--color-text-muted);
+	font-size: 1.02rem;
+	line-height: 1.7;
+}
+
+.entry-content > * + *,
+.section-text-block__text > * + *,
+.contact-page__info > * + * {
+	margin-top: 1em;
+}
+
+.entry-content h2,
+.entry-content h3,
+.section-text-block__text h2,
+.section-text-block__text h3 {
+	margin-top: 1.4em;
+}
+
+.entry-content img,
+.entry-content figure {
+	border-radius: var(--radius);
+}
+
+.entry-content a,
+.section-text-block__text a,
+.contact-page__info a {
+	color: var(--color-accent);
+	text-decoration: underline;
+}

@@ -1,0 +1,180 @@
+/*
+ * Weldman — responsive breakpoint overrides.
+ * Mobile-first base styles live in style.css / components.css;
+ * breakpoints here progressively enhance the layout for larger viewports.
+ *
+ * Breakpoints: 480 / 768 / 1024 / 1280
+ */
+
+/* ==========================================================================
+   >= 480px — large phones
+   ========================================================================== */
+@media (min-width: 480px) {
+	.post-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.section-partners__list {
+		gap: 40px 56px;
+	}
+}
+
+/* ==========================================================================
+   >= 768px — tablets / desktop navigation
+   ========================================================================== */
+@media (min-width: 768px) {
+	.section {
+		padding-block: 80px;
+	}
+
+	.menu-toggle {
+		display: none;
+	}
+
+	.main-navigation {
+		position: static;
+		inset: auto;
+		display: flex;
+		align-items: center;
+		gap: 28px;
+		background: none;
+		padding: 0;
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+		overflow: visible;
+		width: auto;
+	}
+
+	.primary-menu {
+		flex-direction: row;
+		gap: 6px;
+	}
+
+	.primary-menu a {
+		border-bottom: none;
+		padding: 10px 14px;
+		border-radius: var(--radius);
+	}
+
+	.primary-menu a:hover,
+	.primary-menu a:focus {
+		background: rgba(255, 255, 255, 0.08);
+	}
+
+	.primary-menu li {
+		position: relative;
+	}
+
+	.primary-menu .sub-menu {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		min-width: 200px;
+		background: var(--color-primary);
+		padding: 8px;
+		border-radius: var(--radius);
+		box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.4);
+	}
+
+	.primary-menu li.menu-item-has-children:hover .sub-menu,
+	.primary-menu li.menu-item-has-children:focus-within .sub-menu {
+		display: block;
+	}
+
+	.language-switcher {
+		margin-top: 0;
+	}
+
+	.section-hero__inner {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.section-hero__content {
+		flex: 1;
+	}
+
+	.section-hero__media {
+		flex: 1;
+	}
+
+	.section-text-block__inner {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.section-text-block__media,
+	.section-text-block__content {
+		flex: 1;
+	}
+
+	.section-text-block--image-left .section-text-block__inner {
+		flex-direction: row-reverse;
+	}
+
+	.contact-page__grid {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+
+	.contact-page__info,
+	.contact-page__form {
+		flex: 1;
+	}
+
+	.post-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.site-footer__inner {
+		text-align: left;
+		align-items: flex-start;
+	}
+
+	.site-footer__inner {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 24px 40px;
+	}
+
+	.site-footer__copyright {
+		grid-column: 1 / -1;
+		text-align: center;
+	}
+
+	.social-links {
+		justify-content: flex-start;
+	}
+}
+
+/* ==========================================================================
+   >= 1024px — small desktop
+   ========================================================================== */
+@media (min-width: 1024px) {
+	.post-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.section-hero__subtitle {
+		max-width: 40ch;
+	}
+
+	.site-footer__inner {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+/* ==========================================================================
+   >= 1280px — large desktop
+   ========================================================================== */
+@media (min-width: 1280px) {
+	.section {
+		padding-block: 96px;
+	}
+
+	.section-hero__title {
+		font-size: 4rem;
+	}
+}

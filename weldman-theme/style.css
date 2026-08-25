@@ -1,0 +1,27 @@
+/*
+Theme Name: Weldman
+Theme URI: https://weldman.ee/
+Author: Weldman OÜ
+Author URI: https://weldman.ee/
+Description: Lightweight custom classical theme for Weldman OÜ (weldman.ee) — a welding training center in Tallinn, Estonia. Built without Elementor or page builders, using ACF Flexible Content for the homepage sections and Polylang for multilingual support (ET/RU/EN).
+Version: 1.0.0
+Requires at least: 6.0
+Requires PHP: 7.4
+Tested up to: 6.6
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: weldman
+Tags: custom-theme, blog, e-commerce, one-column, two-columns, right-sidebar, custom-menu, featured-images, threaded-comments, translation-ready
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+
+Weldman is based on the _s (underscores) starter theme structure.
+*/
+
+/*
+ * This stylesheet intentionally contains only the theme header required by
+ * WordPress. All actual styles live in assets/css (reset.css, style.css,
+ * components.css, responsive.css) and are enqueued from functions.php so
+ * they can be cached, versioned and minified independently.
+ */
